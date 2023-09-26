@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../presentation/resources/theme_manager.dart';
+import '../presentation/resources/routes_manager.dart';
 
 class MyApp extends StatefulWidget {
   MyApp._internal(); // private named constructor
@@ -18,6 +19,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: getApplicationTheme(),
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: (routeSettings) =>
+          RouteGenerator.getRoute(routeSettings),
+      initialRoute: Routes.splashRoute,
     );
   }
 }
