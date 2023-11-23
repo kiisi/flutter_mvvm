@@ -1,5 +1,5 @@
 import '../../app/extensions.dart';
-import '../../domain/model.dart';
+import '../../domain/models/model.dart';
 import '../responses/responses.dart';
 
 const EMPTY = "";

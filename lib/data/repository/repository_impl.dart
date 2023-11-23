@@ -1,7 +1,7 @@
-import '../../domain/model.dart';
+import '../../domain/models/model.dart';
 import 'package:dartz/dartz.dart';
 
-import '../../domain/repository.dart';
+import '../../domain/repository/repository.dart';
 import '../data_source/remote_data_source.dart';
 import '../mapper/mapper.dart';
 import '../network/error_handler.dart';

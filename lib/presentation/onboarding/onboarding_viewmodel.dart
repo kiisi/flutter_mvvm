@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../../domain/model.dart';
+import '../../domain/models/model.dart';
 import '../base/baseviewmodel.dart';
 import '../resources/assets_manager.dart';
 import '../resources/strings_manager.dart';
@@ -16,13 +16,11 @@ class OnBoardingViewModel extends BaseViewModel
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _streamController.close();
   }
 
   @override
   void start() {
-    // TODO: implement start
     _list = _getSliderData();
 
     _postDataToView();
@@ -55,11 +53,9 @@ class OnBoardingViewModel extends BaseViewModel
   }
 
   @override
-  // TODO: implement inputSliderViewObject
   Sink get inputSliderViewObject => _streamController.sink;
 
   @override
-  // TODO: implement outputSliderViewObject
   Stream<SliderViewObject> get outputSliderViewObject =>
       _streamController.stream.map((slideViewObject) => slideViewObject);
 
