@@ -7,14 +7,13 @@ abstract class RemoteDataSource {
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
-  AppServiceClient _appServiceClient;
+  final AppServiceClient _appServiceClient;
 
   RemoteDataSourceImpl(this._appServiceClient);
 
   @override
   Future<AuthenticationResponse> login(LoginRequest loginRequest) async {
-    // TODO: implement login
-    return await _appServiceClient.login(loginRequest.email,
-        loginRequest.password, loginRequest.imei, loginRequest.deviceId);
+    return await _appServiceClient.login(
+        loginRequest.email, loginRequest.password, "", "");
   }
 }

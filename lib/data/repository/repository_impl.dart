@@ -10,15 +10,14 @@ import '../network/network_info.dart';
 import '../request/request.dart';
 
 class RepositoryImpl extends Repository {
-  RemoteDataSource _remoteDataSource;
-  NetworkInfo _networkInfo;
+  final RemoteDataSource _remoteDataSource;
+  final NetworkInfo _networkInfo;
 
   RepositoryImpl(this._remoteDataSource, this._networkInfo);
 
   @override
   Future<Either<Failure, Authentication>> login(
       LoginRequest loginRequest) async {
-    // TODO: implement login
     if (await _networkInfo.isConnected) {
       try {
         final response = await _remoteDataSource.login(loginRequest);
@@ -31,6 +30,7 @@ class RepositoryImpl extends Repository {
               response.message ?? ResponseMessage.DEFAULT));
         }
       } catch (err) {
+        print(err);
         return Left(ErrorHandler.handle(err).failure);
       }
     } else {

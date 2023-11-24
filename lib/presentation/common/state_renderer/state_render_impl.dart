@@ -73,8 +73,8 @@ class EmptyState extends FlowState {
 extension FlowStateExtension on FlowState {
   Widget getScreenWidget(
       BuildContext context, Widget contentScreenWidget, Function retryAction) {
-    switch (runtimeType) {
-      case LoadingState _:
+    switch (this.runtimeType) {
+      case LoadingState:
         if (getStateRendererType() == StateRendererType.POPUP_LOADING_STATE) {
           // show popup dialog
           showPopUp(context, getStateRendererType(), getMessage());
@@ -87,7 +87,8 @@ extension FlowStateExtension on FlowState {
             retryAction: retryAction,
           );
         }
-      case ErrorState _:
+      case ErrorState:
+        dismissDialog(context);
         if (getStateRendererType() == StateRendererType.POPUP_ERROR_STATE) {
           // show popup dialog
           showPopUp(context, getStateRendererType(), getMessage());
@@ -100,9 +101,10 @@ extension FlowStateExtension on FlowState {
             retryAction: retryAction,
           );
         }
-      case ContentState _:
+      case ContentState:
+        dismissDialog(context);
         return contentScreenWidget;
-      case EmptyState _:
+      case EmptyState:
         return StateRenderer(
           stateRendererType: getStateRendererType(),
           message: getMessage(),
@@ -113,9 +115,18 @@ extension FlowStateExtension on FlowState {
     }
   }
 
+  dismissDialog(BuildContext context) {
+    if (_isThereCurrentDialogShowing(context)) {
+      Navigator.of(context, rootNavigator: true).pop(true);
+    }
+  }
+
+  _isThereCurrentDialogShowing(BuildContext context) =>
+      ModalRoute.of(context)?.isCurrent != true;
+
   showPopUp(BuildContext context, StateRendererType stateRendererType,
       String message) {
-    WidgetsBinding.instance.addPersistentFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (_) => showDialog(
         context: context,
         builder: (BuildContext context) => StateRenderer(

@@ -24,21 +24,20 @@ enum StateRendererType {
 }
 
 class StateRenderer extends StatelessWidget {
-  StateRendererType stateRendererType;
-  String message;
-  String title;
-  Function retryAction;
+  final StateRendererType stateRendererType;
+  final String message;
+  final String title;
+  final Function retryAction;
 
-  StateRenderer(
-      {Key? key,
+  const StateRenderer(
+      {super.key,
       required this.stateRendererType,
       Failure? failure,
       String? message,
       String? title,
       required this.retryAction})
       : message = message ?? AppStrings.loading,
-        title = title ?? EMPTY,
-        super(key: key);
+        title = title ?? EMPTY;
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +121,10 @@ class StateRenderer extends StatelessWidget {
                 Navigator.of(context).pop();
               }
             },
-            child: Text(buttonTitle),
+            child: Text(
+              buttonTitle,
+              style: TextStyle(color: ColorManager.white),
+            ),
           ),
         ),
       ),
@@ -145,12 +147,12 @@ class StateRenderer extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSize.s14),
       ),
       elevation: AppSize.s1_5,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.red,
       child: Container(
         decoration: BoxDecoration(
           color: ColorManager.white,
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(AppSize.s1_5),
+          borderRadius: BorderRadius.circular(AppSize.s14),
           boxShadow: const [
             BoxShadow(
               color: Colors.black26,

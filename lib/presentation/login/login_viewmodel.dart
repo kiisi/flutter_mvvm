@@ -3,6 +3,8 @@ import 'dart:async';
 import '../../domain/usecase/login_usecase.dart';
 import '../base/baseviewmodel.dart';
 import '../common/freezed_data_classes.dart';
+import '../common/state_renderer/state_render_impl.dart';
+import '../common/state_renderer/state_renderer.dart';
 
 class LoginViewModel extends BaseViewModel
     implements LoginViewModelsInputs, LoginViewModelOutputs {
@@ -15,9 +17,12 @@ class LoginViewModel extends BaseViewModel
   final StreamController _isAllInputsValidController =
       StreamController<void>.broadcast();
 
+  StreamController isUserLoggedInSuccessfullyStreamController =
+      StreamController<bool>();
+
   var loginObject = LoginObject("", "");
 
-  LoginUseCase _loginUseCase;
+  final LoginUseCase _loginUseCase;
 
   LoginViewModel(this._loginUseCase);
 
@@ -26,11 +31,12 @@ class LoginViewModel extends BaseViewModel
     _userNameStreamController.close();
     _passwordStreamController.close();
     _isAllInputsValidController.close();
+    isUserLoggedInSuccessfullyStreamController.close();
   }
 
   @override
   void start() {
-    // TODO: implement start
+    inputState.add(ContentState());
   }
 
   @override
@@ -44,9 +50,26 @@ class LoginViewModel extends BaseViewModel
 
   @override
   login() async {
+    inputState.add(
+        LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
+
     (await _loginUseCase.execute(
             LoginUseCaseInput(loginObject.userName, loginObject.password)))
-        .fold((failure) => {print(failure.message)}, (data) => {print(data)});
+        .fold(
+            (failure) => {
+                  inputState.add(
+                    ErrorState(
+                        StateRendererType.POPUP_ERROR_STATE, failure.message),
+                  ),
+                },
+            (data) => {
+                  print("==========================="),
+                  print(data),
+                  inputState.add(ContentState()),
+
+                  isUserLoggedInSuccessfullyStreamController.add(true)
+                  // navigate to main screen
+                });
   }
 
   @override
