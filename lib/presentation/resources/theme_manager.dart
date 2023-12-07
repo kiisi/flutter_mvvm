@@ -43,7 +43,9 @@ ThemeData getApplicationTheme() {
     // elevated button theme
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        textStyle: getRegularStyle(color: ColorManager.white),
+        textStyle:
+            getRegularStyle(color: ColorManager.white, fontSize: AppSize.s16),
+        foregroundColor: ColorManager.white,
         backgroundColor: ColorManager.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSize.s12),
@@ -54,6 +56,8 @@ ThemeData getApplicationTheme() {
     textTheme: TextTheme(
       titleLarge: getSemiBoldStyle(
           color: ColorManager.darkGrey, fontSize: FontSize.s16),
+      displayLarge:
+          getSemiBoldStyle(color: ColorManager.white, fontSize: FontSize.s16),
       titleMedium:
           getMediumStyle(color: ColorManager.lightGrey, fontSize: FontSize.s14),
       titleSmall:

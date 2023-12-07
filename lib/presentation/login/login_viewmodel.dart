@@ -32,6 +32,8 @@ class LoginViewModel extends BaseViewModel
     _passwordStreamController.close();
     _isAllInputsValidController.close();
     isUserLoggedInSuccessfullyStreamController.close();
+
+    super.dispose();
   }
 
   @override
@@ -63,8 +65,6 @@ class LoginViewModel extends BaseViewModel
                   ),
                 },
             (data) => {
-                  print("==========================="),
-                  print(data),
                   inputState.add(ContentState()),
 
                   isUserLoggedInSuccessfullyStreamController.add(true)

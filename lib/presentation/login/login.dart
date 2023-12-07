@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import '../../app/app_prefs.dart';
 import '../../app/di.dart';
 import '../common/state_renderer/state_render_impl.dart';
 import '../resources/assets_manager.dart';
@@ -19,6 +20,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final LoginViewModel _viewModel = instance<LoginViewModel>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -35,6 +37,7 @@ class _LoginViewState extends State<LoginView> {
         .listen((isSuccessLoggedIn) {
       // Navigate to main screen
       SchedulerBinding.instance.addPostFrameCallback((_) {
+        _appPreferences.setIsUserLoggedIn();
         Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
       });
     });
@@ -50,6 +53,23 @@ class _LoginViewState extends State<LoginView> {
   void dispose() {
     super.dispose();
     _viewModel.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: ColorManager.white,
+      body: StreamBuilder<FlowState>(
+        stream: _viewModel.outputState,
+        builder: (context, snapshot) {
+          return snapshot.data?.getScreenWidget(context, _getContentWidget(),
+                  () {
+                _viewModel.login();
+              }) ??
+              _getContentWidget();
+        },
+      ),
+    );
   }
 
   Widget _getContentWidget() {
@@ -125,8 +145,6 @@ class _LoginViewState extends State<LoginView> {
                           : null,
                       child: const Text(
                         AppStrings.login,
-                        style: TextStyle(
-                            color: Colors.white, fontSize: AppSize.s16),
                       ),
                     ),
                   );
@@ -166,23 +184,6 @@ class _LoginViewState extends State<LoginView> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorManager.white,
-      body: StreamBuilder<FlowState>(
-        stream: _viewModel.outputState,
-        builder: (context, snapshot) {
-          return snapshot.data?.getScreenWidget(context, _getContentWidget(),
-                  () {
-                _viewModel.login();
-              }) ??
-              _getContentWidget();
-        },
       ),
     );
   }
