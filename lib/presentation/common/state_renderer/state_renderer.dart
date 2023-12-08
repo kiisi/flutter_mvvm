@@ -126,7 +126,7 @@ class StateRenderer extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               if (stateRendererType ==
-                  StateRendererType.FULL_SCREEN_LOADING_STATE) {
+                  StateRendererType.FULL_SCREEN_ERROR_STATE) {
                 retryAction.call();
               } else {
                 Navigator.of(context).pop();

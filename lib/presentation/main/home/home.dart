@@ -5,6 +5,7 @@ import '../../../app/di.dart';
 import '../../../domain/models/model.dart';
 import '../../common/state_renderer/state_render_impl.dart';
 import '../../resources/color_manager.dart';
+import '../../resources/routes_manager.dart';
 import '../../resources/strings_manager.dart';
 import '../../resources/values_manager.dart';
 import 'home_viewmodel.dart';
@@ -54,33 +55,37 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _getContentScreenWidget() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _getBannersCarousel(),
-        _getSection(AppStrings.services),
-        _getServices(),
-        _getSection(AppStrings.stores),
-        _getStores(),
-      ],
-    );
+    return StreamBuilder<HomeViewObject>(
+        stream: _viewModel.outputHomeData,
+        builder: (context, snapshot) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: AppSize.s10,
+              ),
+              _getBanner(snapshot.data?.banners),
+              _getSection(AppStrings.services),
+              _getServices(snapshot.data?.services),
+              _getSection(AppStrings.stores),
+              _getStores(snapshot.data?.stores),
+              const SizedBox(
+                height: AppSize.s10,
+              ),
+            ],
+          );
+        });
   }
 
   Widget _getSection(String title) {
     return Padding(
       padding: const EdgeInsets.only(
-          top: AppPadding.p12,
-          left: AppPadding.p12,
-          right: AppPadding.p12,
-          bottom: AppPadding.p2),
+        top: AppPadding.p24,
+        left: AppPadding.p12,
+        right: AppPadding.p12,
+        bottom: AppPadding.p2,
+      ),
       child: Text(title, style: Theme.of(context).textTheme.displayMedium),
-    );
-  }
-
-  Widget _getBannersCarousel() {
-    return StreamBuilder<List<BannerAd>>(
-      stream: _viewModel.outputBanner,
-      builder: (context, snapshot) => _getBanner(snapshot.data),
     );
   }
 
@@ -94,12 +99,12 @@ class _HomePageState extends State<HomePage> {
                 child: Card(
                   elevation: AppSize.s1_5,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppSize.s12),
+                    borderRadius: BorderRadius.circular(AppSize.s8),
                     side: BorderSide(
                         color: ColorManager.white, width: AppSize.s1_5),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(AppSize.s1_5),
+                    borderRadius: BorderRadius.circular(AppSize.s8),
                     child: Image.network(
                       banner.image,
                       fit: BoxFit.cover,
@@ -120,11 +125,96 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _getServices() {
-    return const Placeholder();
+  Widget _getServices(List<Service>? services) {
+    if (services != null) {
+      return Padding(
+        padding: const EdgeInsets.only(
+            left: AppPadding.p12, right: AppPadding.p12, top: AppPadding.p12),
+        child: SizedBox(
+          height: AppSize.s165,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: services
+                .map(
+                  (service) => Card(
+                    elevation: AppSize.s4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppSize.s8),
+                      side: BorderSide(
+                          color: ColorManager.white, width: AppSize.s1_5),
+                    ),
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(AppSize.s8),
+                            topRight: Radius.circular(AppSize.s8),
+                          ),
+                          child: Image.network(
+                            service.image,
+                            fit: BoxFit.cover,
+                            width: AppSize.s130,
+                            height: AppSize.s120,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: AppPadding.p8),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              service.title,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 
-  Widget _getStores() {
-    return const Placeholder();
+  Widget _getStores(List<Store>? stores) {
+    if (stores != null) {
+      return Padding(
+        padding: const EdgeInsets.only(
+            left: AppPadding.p12, right: AppPadding.p12, top: AppPadding.p12),
+        child: Flex(
+          direction: Axis.vertical,
+          children: [
+            GridView.count(
+              crossAxisSpacing: AppSize.s8,
+              mainAxisSpacing: AppSize.s8,
+              physics: const ScrollPhysics(),
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              children: List.generate(
+                stores.length,
+                (index) => InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(Routes.storeDetailsRoute);
+                  },
+                  child: Card(
+                    elevation: AppSize.s4,
+                    child: Image.network(
+                      stores[index].image,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 }

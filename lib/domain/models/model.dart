@@ -75,3 +75,12 @@ class HomeObject {
 
   HomeObject(this.data);
 }
+
+class HomeViewObject {
+  List<Store> stores;
+  List<Service> services;
+  List<BannerAd> banners;
+
+  HomeViewObject(
+      {required this.stores, required this.services, required this.banners});
+}

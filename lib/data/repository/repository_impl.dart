@@ -2,6 +2,7 @@ import '../../domain/models/model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../domain/repository/repository.dart';
+import '../data_source/local_data_source.dart';
 import '../data_source/remote_data_source.dart';
 import '../mapper/mapper.dart';
 import '../network/error_handler.dart';
@@ -11,9 +12,11 @@ import '../request/request.dart';
 
 class RepositoryImpl extends Repository {
   final RemoteDataSource _remoteDataSource;
+  final LocalDataSource _localDataSource;
   final NetworkInfo _networkInfo;
 
-  RepositoryImpl(this._remoteDataSource, this._networkInfo);
+  RepositoryImpl(
+      this._remoteDataSource, this._localDataSource, this._networkInfo);
 
   @override
   Future<Either<Failure, Authentication>> login(
@@ -88,23 +91,30 @@ class RepositoryImpl extends Repository {
 
   @override
   Future<Either<Failure, HomeObject>> getHome() async {
-    if (await _networkInfo.isConnected) {
-      try {
-        final response = await _remoteDataSource.getHome();
+    try {
+      // get data from cache
+      final response = await _localDataSource.getHome();
+      return Right(response.toDomain());
+    } catch (e) {
+      if (await _networkInfo.isConnected) {
+        try {
+          final response = await _remoteDataSource.getHome();
 
-        if (response.status == ApiInternalStatus.SUCCESS) {
-          return Right(response.toDomain());
-        } else {
-          // business logic error
-          return Left(Failure(response.status ?? ApiInternalStatus.ERROR,
-              response.message ?? ResponseMessage.DEFAULT));
+          if (response.status == ApiInternalStatus.SUCCESS) {
+            // save data to cache
+            _localDataSource.saveHomeToCache(response);
+            return Right(response.toDomain());
+          } else {
+            // business logic error
+            return Left(Failure(response.status ?? ApiInternalStatus.ERROR,
+                response.message ?? ResponseMessage.DEFAULT));
+          }
+        } catch (err) {
+          return Left(ErrorHandler.handle(err).failure);
         }
-      } catch (err) {
-        print(err);
-        return Left(ErrorHandler.handle(err).failure);
+      } else {
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
-    } else {
-      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
 }

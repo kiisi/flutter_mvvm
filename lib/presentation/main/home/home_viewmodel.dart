@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:rxdart/rxdart.dart';
 
@@ -11,9 +10,12 @@ import '../../common/state_renderer/state_renderer.dart';
 
 class HomeViewModel extends BaseViewModel
     implements HomeViewModelInputs, HomeViewModelOutputs {
-  HomeUseCase _homeUseCase;
+  final HomeUseCase _homeUseCase;
 
   HomeViewModel(this._homeUseCase);
+
+  final StreamController _dataStreamController =
+      BehaviorSubject<HomeViewObject>();
 
   final StreamController _bannerStreamController =
       BehaviorSubject<List<BannerAd>>();
@@ -37,9 +39,12 @@ class HomeViewModel extends BaseViewModel
     },
         (homeObject) => {
               inputState.add(ContentState()),
-              inputBanner.add(homeObject.data.banners),
-              inputService.add(homeObject.data.services),
-              inputService.add(homeObject.data.stores),
+              inputHomeData.add(
+                HomeViewObject(
+                    stores: homeObject.data.stores,
+                    services: homeObject.data.services,
+                    banners: homeObject.data.banners),
+              )
             });
   }
 
@@ -52,35 +57,17 @@ class HomeViewModel extends BaseViewModel
   }
 
   @override
-  Sink get inputBanner => _bannerStreamController.sink;
+  Sink get inputHomeData => _dataStreamController.sink;
 
   @override
-  Sink get inputService => _serviceStreamController.sink;
-
-  @override
-  Sink get inputStore => _storeStreamController.sink;
-
-  @override
-  Stream<List<BannerAd>> get outputBanner =>
-      _bannerStreamController.stream.map((banner) => banner);
-
-  @override
-  Stream<List<Service>> get outputService =>
-      _storeStreamController.stream.map((service) => service);
-
-  @override
-  Stream<List<Store>> get outputStore =>
-      _serviceStreamController.stream.map((store) => store);
+  Stream<HomeViewObject> get outputHomeData =>
+      _dataStreamController.stream.map((data) => data);
 }
 
 abstract class HomeViewModelInputs {
-  Sink get inputStore;
-  Sink get inputService;
-  Sink get inputBanner;
+  Sink get inputHomeData;
 }
 
 abstract class HomeViewModelOutputs {
-  Stream<List<Store>> get outputStore;
-  Stream<List<Service>> get outputService;
-  Stream<List<BannerAd>> get outputBanner;
+  Stream<HomeViewObject> get outputHomeData;
 }
