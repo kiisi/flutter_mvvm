@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../resources/color_manager.dart';
 import '../resources/strings_manager.dart';
 import '../resources/values_manager.dart';
-import 'home.dart';
+import 'home/home.dart';
 import 'notification.dart';
 import 'search.dart';
 import 'setting.dart';

@@ -53,19 +53,19 @@ class Store {
   Store(this.id, this.title, this.image);
 }
 
-class Banner {
+class BannerAd {
   int id;
   String title;
   String image;
   String link;
 
-  Banner(this.id, this.title, this.image, this.link);
+  BannerAd(this.id, this.title, this.image, this.link);
 }
 
 class HomeData {
   List<Service> services;
   List<Store> stores;
-  List<Banner> banners;
+  List<BannerAd> banners;
 
   HomeData(this.services, this.stores, this.banners);
 }
