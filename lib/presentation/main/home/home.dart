@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/di.dart';
@@ -65,9 +66,9 @@ class _HomePageState extends State<HomePage> {
                 height: AppSize.s10,
               ),
               _getBanner(snapshot.data?.banners),
-              _getSection(AppStrings.services),
+              _getSection(AppStrings.services.tr()),
               _getServices(snapshot.data?.services),
-              _getSection(AppStrings.stores),
+              _getSection(AppStrings.stores.tr()),
               _getStores(snapshot.data?.stores),
               const SizedBox(
                 height: AppSize.s10,

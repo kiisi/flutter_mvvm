@@ -12,7 +12,7 @@ ThemeData getApplicationTheme() {
     primaryColorLight: ColorManager.primaryOpacity70,
     primaryColorDark: ColorManager.darkPrimary,
     // ripple color
-    splashColor: ColorManager.primaryOpacity70,
+    splashColor: Colors.transparent,
     // for use case like disabled buttons
     disabledColor: ColorManager.grey1,
     colorScheme: ThemeData().colorScheme.copyWith(secondary: ColorManager.grey),
@@ -64,7 +64,12 @@ ThemeData getApplicationTheme() {
           getSemiBoldStyle(color: ColorManager.white, fontSize: FontSize.s16),
       displayMedium:
           getSemiBoldStyle(color: ColorManager.primary, fontSize: FontSize.s16),
-      bodySmall: getRegularStyle(color: ColorManager.grey1),
+      bodySmall:
+          getRegularStyle(color: ColorManager.primary, fontSize: FontSize.s14),
+      bodyMedium: getMediumStyle(
+        color: ColorManager.lightGrey,
+        fontSize: FontSize.s14,
+      ),
       bodyLarge: getRegularStyle(color: ColorManager.grey),
     ),
     // input decoration theme (text form field)

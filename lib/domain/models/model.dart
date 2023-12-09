@@ -84,3 +84,21 @@ class HomeViewObject {
   HomeViewObject(
       {required this.stores, required this.services, required this.banners});
 }
+
+class StoreDetails {
+  int id;
+  String title;
+  String image;
+  String details;
+  String services;
+  String about;
+
+  StoreDetails({
+    required this.id,
+    required this.title,
+    required this.image,
+    required this.details,
+    required this.services,
+    required this.about,
+  });
+}

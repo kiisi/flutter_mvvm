@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -129,7 +130,7 @@ class _RegisterViewState extends State<RegisterView> {
                     keyboardType: TextInputType.emailAddress,
                     controller: _userNameTextEditingController,
                     decoration: InputDecoration(
-                      labelText: AppStrings.username,
+                      labelText: AppStrings.username.tr(),
                       errorText: snapshot.data,
                     ),
                   );
@@ -167,7 +168,7 @@ class _RegisterViewState extends State<RegisterView> {
                             keyboardType: TextInputType.number,
                             controller: _mobileNumberTextEditingController,
                             decoration: InputDecoration(
-                              labelText: AppStrings.mobileNumber,
+                              labelText: AppStrings.mobileNumber.tr(),
                               errorText: snapshot.data,
                             ),
                           );
@@ -191,7 +192,7 @@ class _RegisterViewState extends State<RegisterView> {
                     keyboardType: TextInputType.visiblePassword,
                     controller: _passwordTextEditingController,
                     decoration: InputDecoration(
-                      labelText: AppStrings.password,
+                      labelText: AppStrings.password.tr(),
                       errorText: snapshot.data,
                     ),
                     obscureText: true,
@@ -212,7 +213,7 @@ class _RegisterViewState extends State<RegisterView> {
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailTextEditingController,
                     decoration: InputDecoration(
-                      labelText: AppStrings.emailHint,
+                      labelText: AppStrings.emailHint.tr(),
                       errorText: snapshot.data,
                     ),
                   );
@@ -256,7 +257,7 @@ class _RegisterViewState extends State<RegisterView> {
                           : null,
                       child: const Text(
                         AppStrings.register,
-                      ),
+                      ).tr(),
                     ),
                   );
                 },
@@ -274,7 +275,7 @@ class _RegisterViewState extends State<RegisterView> {
                 child: Text(
                   AppStrings.haveAccount,
                   style: Theme.of(context).textTheme.titleSmall,
-                ),
+                ).tr(),
               ),
             ),
           ],
@@ -292,8 +293,8 @@ class _RegisterViewState extends State<RegisterView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Flexible(
-            child: Text(AppStrings.profilePicture),
+          Flexible(
+            child: const Text(AppStrings.profilePicture).tr(),
           ),
           Flexible(
             child: StreamBuilder<File?>(
@@ -329,7 +330,7 @@ class _RegisterViewState extends State<RegisterView> {
               ListTile(
                 trailing: const Icon(Icons.arrow_forward),
                 leading: const Icon(Icons.camera),
-                title: const Text(AppStrings.photoGallery),
+                title: const Text(AppStrings.photoGallery).tr(),
                 onTap: () {
                   _imageFromGallery();
                   Navigator.of(context).pop();
@@ -338,7 +339,7 @@ class _RegisterViewState extends State<RegisterView> {
               ListTile(
                 trailing: const Icon(Icons.arrow_forward),
                 leading: const Icon(Icons.camera_alt_rounded),
-                title: const Text(AppStrings.photoCamera),
+                title: const Text(AppStrings.photoCamera).tr(),
                 onTap: () {
                   _imageFromCamera();
                   Navigator.of(context).pop();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../app/di.dart';
 import '../../app/app_prefs.dart';
@@ -85,7 +86,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     Navigator.pushNamed(context, Routes.loginRoute);
                   },
                   child: Text(
-                    AppStrings.skip,
+                    AppStrings.skip.tr(),
                     textAlign: TextAlign.end,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),

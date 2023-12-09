@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 
+import '../../presentation/resources/strings_manager.dart';
 import 'failure.dart';
 
 enum DataSource {
@@ -71,35 +73,40 @@ extension DataSourceExtension on DataSource {
   Failure getFailure() {
     switch (this) {
       case DataSource.BAD_REQUEST:
-        return Failure(ResponseCode.BAD_REQUEST, ResponseMessage.BAD_REQUEST);
+        return Failure(
+            ResponseCode.BAD_REQUEST, ResponseMessage.BAD_REQUEST.tr());
       case DataSource.FORBIDDEN:
-        return Failure(ResponseCode.FORBIDDEN, ResponseMessage.FORBIDDEN);
+        return Failure(ResponseCode.FORBIDDEN, ResponseMessage.FORBIDDEN.tr());
       case DataSource.UNAUTHORISED:
-        return Failure(ResponseCode.UNAUTHORISED, ResponseMessage.UNAUTHORISED);
+        return Failure(
+            ResponseCode.UNAUTHORISED, ResponseMessage.UNAUTHORISED.tr());
       case DataSource.NOT_FOUND:
-        return Failure(ResponseCode.NOT_FOUND, ResponseMessage.NOT_FOUND);
+        return Failure(ResponseCode.NOT_FOUND, ResponseMessage.NOT_FOUND.tr());
       case DataSource.INTERNAL_SERVER_ERROR:
         return Failure(ResponseCode.INTERNAL_SERVER_ERROR,
-            ResponseMessage.INTERNAL_SERVER_ERROR);
+            ResponseMessage.INTERNAL_SERVER_ERROR.tr());
       case DataSource.CONNECT_TIMEOUT:
         return Failure(
-            ResponseCode.CONNECT_TIMEOUT, ResponseMessage.CONNECT_TIMEOUT);
+            ResponseCode.CONNECT_TIMEOUT, ResponseMessage.CONNECT_TIMEOUT.tr());
       case DataSource.CANCEL:
-        return Failure(ResponseCode.CANCEL, ResponseMessage.CANCEL);
+        return Failure(ResponseCode.CANCEL, ResponseMessage.CANCEL.tr());
       case DataSource.RECEIVE_TIMEOUT:
         return Failure(
-            ResponseCode.RECEIVE_TIMEOUT, ResponseMessage.RECEIVE_TIMEOUT);
+            ResponseCode.RECEIVE_TIMEOUT, ResponseMessage.RECEIVE_TIMEOUT.tr());
       case DataSource.SEND_TIMEOUT:
-        return Failure(ResponseCode.SEND_TIMEOUT, ResponseMessage.SEND_TIMEOUT);
+        return Failure(
+            ResponseCode.SEND_TIMEOUT, ResponseMessage.SEND_TIMEOUT.tr());
       case DataSource.CACHE_ERROR:
-        return Failure(ResponseCode.CACHE_ERROR, ResponseMessage.CACHE_ERROR);
+        return Failure(
+            ResponseCode.CACHE_ERROR, ResponseMessage.CACHE_ERROR.tr());
       case DataSource.NO_INTERNET_CONNECTION:
         return Failure(ResponseCode.NO_INTERNET_CONNECTION,
-            ResponseMessage.NO_INTERNET_CONNECTION);
+            ResponseMessage.NO_INTERNET_CONNECTION.tr());
       case DataSource.DEFAULT:
-        return Failure(ResponseCode.DEFAULT, ResponseMessage.DEFAULT);
+        return Failure(ResponseCode.DEFAULT, ResponseMessage.DEFAULT.tr());
       default:
-        return Failure(ResponseCode.BAD_REQUEST, ResponseMessage.BAD_REQUEST);
+        return Failure(
+            ResponseCode.BAD_REQUEST, ResponseMessage.BAD_REQUEST.tr());
     }
   }
 }
@@ -125,20 +132,19 @@ class ResponseCode {
 
 class ResponseMessage {
   // API status code
-  static const String SUCCESS = "Success";
-  static const String NO_CONTENT = "Success with no content";
-  static const String BAD_REQUEST = "Bad request, try again later";
-  static const String FORBIDDEN = "Forbidden request, try again later";
-  static const String UNAUTHORISED = "Unauthorized user";
-  static const String NOT_FOUND = "Not found";
-  static const String INTERNAL_SERVER_ERROR =
-      "Somethin went wrong, try again later";
+  static const String SUCCESS = AppStrings.success;
+  static const String NO_CONTENT = AppStrings.noContent;
+  static const String BAD_REQUEST = AppStrings.badRequestError;
+  static const String FORBIDDEN = AppStrings.forbiddenError;
+  static const String UNAUTHORISED = AppStrings.unauthorizedError;
+  static const String NOT_FOUND = AppStrings.notFoundError;
+  static const String INTERNAL_SERVER_ERROR = AppStrings.internalServerError;
   // local status code
-  static const String DEFAULT = "Unknown error";
-  static const String CONNECT_TIMEOUT = "Time out error, try again later";
-  static const String CANCEL = "Request cancelled";
-  static const String RECEIVE_TIMEOUT = "Time out error, try again later";
-  static const String SEND_TIMEOUT = "Time out error, try again later";
-  static const String CACHE_ERROR = "Cache error, try again later";
-  static const String NO_INTERNET_CONNECTION = "You are currently offline";
+  static const String DEFAULT = AppStrings.defaultError;
+  static const String CONNECT_TIMEOUT = AppStrings.timeoutError;
+  static const String CANCEL = AppStrings.defaultError;
+  static const String RECEIVE_TIMEOUT = AppStrings.timeoutError;
+  static const String SEND_TIMEOUT = AppStrings.timeoutError;
+  static const String CACHE_ERROR = AppStrings.defaultError;
+  static const String NO_INTERNET_CONNECTION = AppStrings.noInternetError;
 }
